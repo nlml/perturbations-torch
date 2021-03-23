@@ -1,4 +1,14 @@
-# Differentiable Optimizers with Perturbations in Tensorflow
+# Pytorch re-implementation of "Differentiable Optimizers with Perturbations in Tensorflow"
+
+This is a port of [google-research/perturbations](https://github.com/google-research/google-research/tree/master/perturbations) from TensorFlow to Pytorch.
+
+The original code rights belong to Google.
+
+Usage: `pip install git+git://github.com/nlml/perturbations-torch.git`
+
+Then see example usage in `example-ranking-loss.ipynb`.
+
+*The original Google Research README.md follows, for convenience:*
 
 ## Overview
 
