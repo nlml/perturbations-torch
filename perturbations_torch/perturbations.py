@@ -91,7 +91,7 @@ def perturbed(
         def forward(input_tensor, *args, **kwargs):
             class PerturbedTch(torch.autograd.Function):
                 @staticmethod
-                def forward(ctx, input_tensor, *args, **kwargs):
+                def forward(ctx, input_tensor):
                     """
                     In the forward pass we receive a Tensor containing the input and return
                     a Tensor containing the output. ctx is a context object that can be used
@@ -101,7 +101,10 @@ def perturbed(
                     original_input_shape = input_tensor.shape
                     orig_shape = torch.LongTensor(list(original_input_shape))
                     if batched:
-                        assert len(original_input_shape) >= 2
+                        if not len(original_input_shape) >= 2:
+                            raise ValueError(
+                                "Batched inputs must have at least rank two"
+                            )
                     else:
                         input_tensor = input_tensor.unsqueeze(0)
                     input_shape = input_tensor.shape  # [B, D1, ... Dk], k >= 1
@@ -123,7 +126,7 @@ def perturbed(
                         flat_batch_dim_shape
                     )
                     # Calls user-defined function in a perturbation agnostic manner.
-                    perturbed_output = func(perturbed_input)
+                    perturbed_output = func(perturbed_input, *args, **kwargs)
                     # [NB, D1, ..., Dk] ->  [N, B, D1, ..., Dk].
                     perturbed_input = perturbed_input.view(
                         perturbed_input_shape
@@ -183,7 +186,7 @@ def perturbed(
                     g /= sigma * num_samples
                     return g.view(*original_input_shape)
 
-            return PerturbedTch.apply(input_tensor, *args, **kwargs)
+            return PerturbedTch.apply(input_tensor)
 
         return forward(input_tensor, *args, **kwargs)
 

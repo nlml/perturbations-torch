@@ -19,7 +19,7 @@
 from absl.testing import parameterized
 import tensorflow.compat.v2 as tf
 
-from perturbations import perturbations
+from perturbations_torch import perturbations_tf as perturbations
 
 
 def reduce_sign_any(input_tensor, axis=-1):

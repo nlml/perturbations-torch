@@ -13,12 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as: python3
 """Implementation of a Fenchel-Young loss using perturbation techniques."""
 
 import torch
 from typing import Callable, Optional
-from perturbations import perturbations_tch
+from perturbations_torch import perturbations
 
 
 class FenchelYoungLoss(torch.nn.Module):
@@ -29,7 +28,7 @@ class FenchelYoungLoss(torch.nn.Module):
         func=None,
         num_samples=1000,
         sigma=0.01,
-        noise=perturbations_tch._NORMAL,
+        noise=perturbations._NORMAL,
         batched=True,
         maximize=True,
         reduction="sum",
@@ -38,7 +37,7 @@ class FenchelYoungLoss(torch.nn.Module):
         self._batched = batched
         self._maximize = maximize
         self.func = func
-        self.perturbed = perturbations_tch.perturbed(
+        self.perturbed = perturbations.perturbed(
             func=func,
             num_samples=num_samples,
             sigma=sigma,
