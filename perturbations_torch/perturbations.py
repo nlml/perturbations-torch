@@ -114,7 +114,8 @@ def perturbed(
                         noise, perturbed_input_shape
                     )
                     additive_noise, noise_gradient = [
-                        noise.type(input_tensor.dtype) for noise in noises
+                        noise.to(input_tensor.device).type(input_tensor.dtype)
+                        for noise in noises
                     ]
                     perturbed_input = (
                         input_tensor.unsqueeze(0) + sigma * additive_noise
